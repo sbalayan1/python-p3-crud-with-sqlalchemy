@@ -71,10 +71,26 @@ if __name__ == '__main__':
     # print(session.query(func.count(Student.id).all()))
     # => [(2,)]
 
-    print(session.query(Student).filter(Student.name.like('%Alan%'), Student.grade == 11).all())
+    # print(session.query(Student).filter(Student.name.like('%Alan%'), Student.grade == 11))
         #the above will print the sql statement unless we include the all() method
 
-    query = session.query(Student).filter(Student.name.like('%Alan%'), Student.grade == 11).all()
+    # query = session.query(Student).filter(Student.name.like('%Alan%'), Student.grade == 11).all()
 
-    for record in query:
-        print(record.name)
+    # for record in query:
+    #     print(record.name)
+
+    for student in session.query(Student).all(): #note that the all() method is not necessary here, likely because python interprets the sql statement as a list?
+        student.grade += 1
+        # print(student)
+
+    session.commit()
+    session.query(Student).update({Student.grade: Student.grade + 1})
+    # print([(student.name, student.grade) for student in session.query(Student)])
+    #=> [('Albert Einstein', 8), ('Alan Turing', 13)]
+
+    query = session.query(Student).filter(Student.name == "Albert Einstein")
+    albert_einstein = query.first()
+    session.delete(albert_einstein)
+    session.commit()
+    print(query.first())
+    #=> None
