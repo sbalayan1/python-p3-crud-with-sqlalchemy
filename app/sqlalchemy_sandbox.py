@@ -2,7 +2,7 @@
 
 from datetime import datetime
 
-from sqlalchemy import (create_engine, Column, Integer, DateTime, String, desc, Index)
+from sqlalchemy import (create_engine, Column, Integer, DateTime, String, desc, Index, func)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -65,5 +65,16 @@ if __name__ == '__main__':
     # student = session.query(Student.name, Student.birthday).order_by(desc(Student.grade)).first()
         #prints ('Alan Turing', datetime.datetime(1912, 6, 23, 0, 0))
 
-    print(students)
-    print(student)
+    # print(students)
+    # print(student)
+
+    # print(session.query(func.count(Student.id).all()))
+    # => [(2,)]
+
+    print(session.query(Student).filter(Student.name.like('%Alan%'), Student.grade == 11).all())
+        #the above will print the sql statement unless we include the all() method
+
+    query = session.query(Student).filter(Student.name.like('%Alan%'), Student.grade == 11).all()
+
+    for record in query:
+        print(record.name)
