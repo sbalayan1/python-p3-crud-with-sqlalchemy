@@ -56,4 +56,6 @@ if __name__ == '__main__':
     session.add(alan_turing)
     session.commit()
 
-    print(alan_turing.id, albert_einstein.id)
+    student = session.query(Student.name, Student.birthday).order_by(desc(Student.grade)).first()
+
+    print(student.grade)
