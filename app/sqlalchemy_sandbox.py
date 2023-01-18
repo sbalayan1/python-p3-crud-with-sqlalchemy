@@ -56,6 +56,14 @@ if __name__ == '__main__':
     session.add(alan_turing)
     session.commit()
 
-    student = session.query(Student.name, Student.birthday).order_by(desc(Student.grade)).first()
+    students = session.query(Student).all()
+    student = session.query(Student.name, Student.birthday).order_by(desc(Student.grade)).limit(1).all()
 
-    print(student.grade)
+        #w/o all() prints SELECT students.name as student_name, students.birthday as student_birthday FROM students ORDER_BY students.grade DESC LIMIT ? OFFSET ?
+        #w/ all() prints [('Alan Turing', datetime.datetime(1912, 6, 23, 0, 0))]
+
+    # student = session.query(Student.name, Student.birthday).order_by(desc(Student.grade)).first()
+        #prints ('Alan Turing', datetime.datetime(1912, 6, 23, 0, 0))
+
+    print(students)
+    print(student)
